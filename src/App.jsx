@@ -29,6 +29,9 @@ function App() {
           <li>Satranç</li>
         </ul>
       </div>
+      <footer className="footer">
+        <p>© 2026 Yunus Emre Köseoğlu — Web Tasarımı ve Programlama Dersi</p>
+      </footer>
     </div>
   )
 }
