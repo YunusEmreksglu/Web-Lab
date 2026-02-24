@@ -67,12 +67,12 @@ function App() {
         </nav>
       </header>
 
-      {/* Uygulama-3: id="main-content" skip-link hedefi */}
-      <main id="main-content">
+      {/* Uygulama-3: id + tabIndex=-1 — skip-link odaklanabilsin */}
+      <main id="main-content" tabIndex={-1}>
 
         {/* Uygulama-1/2/5: Hakkimda bolumu */}
-        <section id="hakkimda">
-          <h2>Hakkimda</h2>
+        <section id="hakkimda" aria-labelledby="hakkimda-baslik">
+          <h2 id="hakkimda-baslik">Hakkimda</h2>
 
           {/* Uygulama-2: Profil fotografi - figure + figcaption */}
           <figure className="profile-figure">
@@ -102,8 +102,8 @@ function App() {
         </section>
 
         {/* Uygulama-1/2/5: Projeler bolumu */}
-        <section id="projeler">
-          <h2>Projelerim</h2>
+        <section id="projeler" aria-labelledby="projeler-baslik">
+          <h2 id="projeler-baslik">Projelerim</h2>
 
           {/* Uygulama-5: Her proje bir <article> icinde */}
           <div className="projects-grid">
@@ -157,8 +157,8 @@ function App() {
         </section>
 
         {/* Uygulama-1/4/5: Iletisim bolumu + dogrulamali form */}
-        <section id="iletisim">
-          <h2>Iletisim</h2>
+        <section id="iletisim" aria-labelledby="iletisim-baslik">
+          <h2 id="iletisim-baslik">Iletisim</h2>
 
           {/* Uygulama-4: Dogrulamali iletisim formu — accessible */}
           <form action="#" method="POST" noValidate onSubmit={handleSubmit}>
