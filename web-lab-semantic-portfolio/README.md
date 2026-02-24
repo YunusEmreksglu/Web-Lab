@@ -25,6 +25,15 @@ Projenin erişilebilirlik ve performans analizi için Lighthouse raporu:
 
 > Rapor; **Performance**, **Accessibility**, **Best Practices** ve **SEO** kategorilerini kapsamaktadır.
 
+### Rapor Görüntüleri
+
+| | |
+|---|---|
+| ![Lighthouse Sayfa 1](./docs/lighthouse/lighthouse-page-1.png) | ![Lighthouse Sayfa 2](./docs/lighthouse/lighthouse-page-2.png) |
+| ![Lighthouse Sayfa 3](./docs/lighthouse/lighthouse-page-3.png) | ![Lighthouse Sayfa 4](./docs/lighthouse/lighthouse-page-4.png) |
+
+![Lighthouse Sayfa 5](./docs/lighthouse/lighthouse-page-5.png)
+
 ## Commit Geçmişi
 
 | Commit | Açıklama |
