@@ -1,16 +1,35 @@
-# React + Vite
+# Web Lab — Semantik Portfolyo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Yunus Emre Köseoğlu tarafından Web Programlama dersi kapsamında hazırlanmış,
+semantik HTML ve erişilebilirlik standartlarına (WCAG 2.1) uygun kişisel portfolyo sitesi.
 
-Currently, two official plugins are available:
+## Teknolojiler
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 18 + Vite
+- Semantik HTML5 (`header`, `main`, `section`, `article`, `footer`)
+- Erişilebilirlik: `aria-label`, `aria-labelledby`, `aria-invalid`, `aria-required`, skip-link
+- Client-side form doğrulama (React state tabanlı)
 
-## React Compiler
+## Kurulum ve Çalıştırma
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+## Lighthouse Raporu
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Projenin erişilebilirlik ve performans analizi için Lighthouse raporu:
+
+📄 [Lighthouse.pdf](./Lighthouse.pdf)
+
+> Rapor; **Performance**, **Accessibility**, **Best Practices** ve **SEO** kategorilerini kapsamaktadır.
+
+## Commit Geçmişi
+
+| Commit | Açıklama |
+|--------|----------|
+| `feat: add semantic HTML portfolio structure` | Semantik iskelet, nav, section, article |
+| `feat: add accessible contact form` | `aria-*` nitelikleri, React state doğrulama, live region |
+| `style: add base CSS and skip link` | Skip link, focus-visible, aria-invalid stili |
+| `fix: improve a11y based on Lighthouse report` | `lang="tr"`, meta description, `aria-labelledby`, `tabIndex` |
