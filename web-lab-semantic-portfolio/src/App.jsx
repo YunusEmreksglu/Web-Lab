@@ -1,57 +1,48 @@
+import { useState } from 'react'
 import './App.css'
 
 function App() {
-  /* Uygulama-3 & 4: Basit istemci taraflı form dogrulamasi */
-  function handleSubmit(e) {
-    e.preventDefault()
-    const form = e.target
+  /* ---- Form state: hata mesajlari + basari bildirimi ---- */
+  const [formErrors, setFormErrors] = useState({
+    name: '', email: '', subject: '', message: '',
+  })
+  const [formSuccess, setFormSuccess] = useState(false)
+
+  function validate(fields) {
+    const errors = { name: '', email: '', subject: '', message: '' }
     let valid = true
 
-    const nameInput   = form.elements['name']
-    const emailInput  = form.elements['email']
-    const subjectSel  = form.elements['subject']
-    const messageArea = form.elements['message']
-
-    const nameErr    = document.getElementById('name-error')
-    const emailErr   = document.getElementById('email-error')
-    const subjectErr = document.getElementById('subject-error')
-    const messageErr = document.getElementById('message-error')
-
-    // Ad Soyad
-    if (!nameInput.value || nameInput.value.trim().length < 2) {
-      nameErr.textContent = 'Ad soyad en az 2 karakter olmalidir.'
+    if (!fields.name || fields.name.trim().length < 2) {
+      errors.name = 'Ad soyad en az 2 karakter olmalidir.'
       valid = false
-    } else {
-      nameErr.textContent = ''
     }
-
-    // E-posta
-    if (!emailInput.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
-      emailErr.textContent = 'Gecerli bir e-posta adresi giriniz.'
+    if (!fields.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
+      errors.email = 'Gecerli bir e-posta adresi giriniz.'
       valid = false
-    } else {
-      emailErr.textContent = ''
     }
-
-    // Konu
-    if (!subjectSel.value) {
-      subjectErr.textContent = 'Lutfen bir konu seciniz.'
+    if (!fields.subject) {
+      errors.subject = 'Lutfen bir konu seciniz.'
       valid = false
-    } else {
-      subjectErr.textContent = ''
     }
-
-    // Mesaj
-    if (!messageArea.value || messageArea.value.trim().length < 10) {
-      messageErr.textContent = 'Mesaj en az 10 karakter olmalidir.'
+    if (!fields.message || fields.message.trim().length < 10) {
+      errors.message = 'Mesaj en az 10 karakter olmalidir.'
       valid = false
-    } else {
-      messageErr.textContent = ''
     }
+    return { errors, valid }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    const fd = new FormData(e.target)
+    const fields = Object.fromEntries(fd.entries())
+    const { errors, valid } = validate(fields)
+    setFormErrors(errors)
 
     if (valid) {
-      alert('Formunuz basariyla gonderildi!')
-      form.reset()
+      setFormSuccess(true)
+      e.target.reset()
+      // Basari mesaji 5 saniye sonra kaybolur
+      setTimeout(() => setFormSuccess(false), 5000)
     }
   }
 
@@ -169,10 +160,17 @@ function App() {
         <section id="iletisim">
           <h2>Iletisim</h2>
 
-          {/* Uygulama-4: Dogrulamalı iletisim formu */}
+          {/* Uygulama-4: Dogrulamali iletisim formu — accessible */}
           <form action="#" method="POST" noValidate onSubmit={handleSubmit}>
             <fieldset>
               <legend>Iletisim Formu</legend>
+
+              {/* Basari bildirimi — ekran okuyucular icin live region */}
+              {formSuccess && (
+                <div className="success-msg" role="status" aria-live="polite">
+                  ✓ Formunuz basariyla gonderildi!
+                </div>
+              )}
 
               <div className="form-group">
                 <label htmlFor="name">Ad Soyad:</label>
@@ -182,9 +180,14 @@ function App() {
                   name="name"
                   required
                   minLength={2}
+                  autoComplete="name"
+                  aria-required="true"
+                  aria-invalid={formErrors.name ? 'true' : 'false'}
                   aria-describedby="name-error"
                 />
-                <small id="name-error" className="error-msg" role="alert"></small>
+                <small id="name-error" className="error-msg" role="alert">
+                  {formErrors.name}
+                </small>
               </div>
 
               <div className="form-group">
@@ -194,9 +197,14 @@ function App() {
                   id="email"
                   name="email"
                   required
+                  autoComplete="email"
+                  aria-required="true"
+                  aria-invalid={formErrors.email ? 'true' : 'false'}
                   aria-describedby="email-error"
                 />
-                <small id="email-error" className="error-msg" role="alert"></small>
+                <small id="email-error" className="error-msg" role="alert">
+                  {formErrors.email}
+                </small>
               </div>
 
               <div className="form-group">
@@ -205,6 +213,8 @@ function App() {
                   id="subject"
                   name="subject"
                   required
+                  aria-required="true"
+                  aria-invalid={formErrors.subject ? 'true' : 'false'}
                   aria-describedby="subject-error"
                 >
                   <option value="">-- Seciniz --</option>
@@ -212,7 +222,9 @@ function App() {
                   <option value="soru">Soru</option>
                   <option value="oneri">Oneri</option>
                 </select>
-                <small id="subject-error" className="error-msg" role="alert"></small>
+                <small id="subject-error" className="error-msg" role="alert">
+                  {formErrors.subject}
+                </small>
               </div>
 
               <div className="form-group">
@@ -223,9 +235,13 @@ function App() {
                   rows={5}
                   required
                   minLength={10}
+                  aria-required="true"
+                  aria-invalid={formErrors.message ? 'true' : 'false'}
                   aria-describedby="message-error"
                 ></textarea>
-                <small id="message-error" className="error-msg" role="alert"></small>
+                <small id="message-error" className="error-msg" role="alert">
+                  {formErrors.message}
+                </small>
               </div>
 
               <button type="submit">Gonder</button>
