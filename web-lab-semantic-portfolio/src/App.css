@@ -34,6 +34,7 @@ body {
   font-weight: 600;
   text-decoration: none;
   border-radius: 0 0 4px 0;
+  transition: top 0.15s ease;
 }
 .skip-link:focus {
   top: 0;
@@ -261,11 +262,38 @@ select:focus {
 }
 
 .error-msg {
-  color: red;
+  color: #dc2626;
   font-size: 0.85rem;
   display: block;
   margin-top: 0.2rem;
   min-height: 1.1em;
+}
+
+/* Gecersiz alan — aria-invalid="true" oldugunda kirmizi cerceve */
+input[aria-invalid='true'],
+textarea[aria-invalid='true'],
+select[aria-invalid='true'] {
+  border-color: #dc2626;
+}
+
+/* Form basari bildirimi */
+.success-msg {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+/* Focus-visible: klavye navigasyonu icin belirgin, fare tiklamasinda sade */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 3px;
 }
 
 button[type='submit'] {
