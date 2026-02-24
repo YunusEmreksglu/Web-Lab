@@ -34,11 +34,3 @@ Projenin erişilebilirlik ve performans analizi için Lighthouse raporu:
 
 ![Lighthouse Sayfa 5](./docs/lighthouse/lighthouse-page-5.png)
 
-## Commit Geçmişi
-
-| Commit | Açıklama |
-|--------|----------|
-| `feat: add semantic HTML portfolio structure` | Semantik iskelet, nav, section, article |
-| `feat: add accessible contact form` | `aria-*` nitelikleri, React state doğrulama, live region |
-| `style: add base CSS and skip link` | Skip link, focus-visible, aria-invalid stili |
-| `fix: improve a11y based on Lighthouse report` | `lang="tr"`, meta description, `aria-labelledby`, `tabIndex` |
