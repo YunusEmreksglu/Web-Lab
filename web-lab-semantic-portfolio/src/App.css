@@ -1,0 +1,367 @@
+/* ============================================================
+   Uygulama-6: Temel CSS
+   ============================================================ */
+
+/* Genel sifirlama */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+  color: #1a1a1a;
+  background-color: #f9fafb;
+}
+
+#root {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ---- Skip link: normalde gizli, Tab ile gorunur ---- */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: #1e3a8a;
+  color: #fff;
+  padding: 8px 16px;
+  z-index: 100;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 4px 0;
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* ---- Focus gostergesi -- ASLA kaldirma ---- */
+:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+header {
+  background-color: #1e3a8a;
+  color: #fff;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.25rem;
+}
+
+nav a {
+  color: #e0e7ff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+nav a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* ============================================================
+   MAIN & SECTIONS
+   ============================================================ */
+main {
+  padding: 2rem 0;
+}
+
+section {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+section h2 {
+  font-size: 1.6rem;
+  color: #1e3a8a;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #dbeafe;
+  padding-bottom: 0.5rem;
+}
+
+/* ============================================================
+   HAKKIMDA
+   ============================================================ */
+.profile-figure {
+  float: left;
+  margin: 0 1.5rem 1rem 0;
+  text-align: center;
+}
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #2563eb;
+  display: block;
+}
+
+.profile-figure figcaption {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 0.25rem;
+}
+
+#hakkimda p {
+  margin-bottom: 1rem;
+}
+
+.tech-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  clear: both;
+}
+
+.tech-list li {
+  background: #dbeafe;
+  color: #1e3a8a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* ============================================================
+   PROJELER
+   ============================================================ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.project-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.project-card h3 {
+  font-size: 1.1rem;
+  color: #1e3a8a;
+}
+
+.project-card figure {
+  margin: 0;
+}
+
+.project-card figure img {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  display: block;
+}
+
+.project-card figure figcaption {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+  text-align: center;
+}
+
+.project-link {
+  display: inline-block;
+  background: #2563eb;
+  color: #fff;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  align-self: flex-start;
+  transition: background 0.2s;
+}
+
+.project-link:hover {
+  background: #1d4ed8;
+}
+
+/* ============================================================
+   ILETISIM FORMU (Uygulama-4 & 6)
+   ============================================================ */
+fieldset {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+legend {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1e3a8a;
+  padding: 0 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #2563eb;
+}
+
+.error-msg {
+  color: #dc2626;
+  font-size: 0.85rem;
+  display: block;
+  margin-top: 0.2rem;
+  min-height: 1.1em;
+}
+
+/* Gecersiz alan — aria-invalid="true" oldugunda kirmizi cerceve */
+input[aria-invalid='true'],
+textarea[aria-invalid='true'],
+select[aria-invalid='true'] {
+  border-color: #dc2626;
+}
+
+/* Form basari bildirimi */
+.success-msg {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+/* Focus-visible: klavye navigasyonu icin belirgin, fare tiklamasinda sade */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 3px;
+}
+
+button[type='submit'] {
+  background: #1e3a8a;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+
+button[type='submit']:hover {
+  background: #1d4ed8;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background-color: #1e3a8a;
+  color: #e0e7ff;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  margin-top: 2rem;
+}
+
+footer p {
+  margin-bottom: 0.75rem;
+}
+
+.social-links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.social-links a {
+  color: #bfdbfe;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.social-links a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .profile-figure {
+    float: none;
+    margin: 0 auto 1rem;
+  }
+}
