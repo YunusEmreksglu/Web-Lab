@@ -1,12 +1,26 @@
-import { useState, useEffect } from 'react';
-import UIKit from './pages/UIKit';
-import Button from './components/Button';
-import Input from './components/Input';
-import Card from './components/Card';
+import { useState, useEffect } from "react";
+import type { Project, Category, SortField, SortOrder } from "./types/project";
+import { fetchProjects } from "./services/projectService";
+import { applyFilters } from "./utils/projectHelpers";
+import Card from "./components/Card";
+import Input from "./components/Input";
+import Button from "./components/Button";
+import Alert from "./components/Alert";
+import UIKit from "./pages/UIKit";
 
-function App() {
+export default function App() {
+  // --- LAYOUT STATE ---
   const [showUIKit, setShowUIKit] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // --- PROJECT STATE ---
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState<Category | "all">("all");
+  const [sortField, setSortField] = useState<SortField>("year");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -17,6 +31,32 @@ function App() {
   }, [isDarkMode]);
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
+
+  // --- VERİ ÇEKME ---
+  useEffect(() => {
+    async function load() {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchProjects();
+        setProjects(data);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Bilinmeyen hata"
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
+
+  // --- TÜRETİLMİŞ (DERIVED) VERİ ---
+  const filtered = applyFilters(
+    projects, search, category, sortField, sortOrder
+  );
+
+  const categories: (Category | "all")[] = ["all", "frontend", "fullstack", "backend"];
 
   if (showUIKit) {
     return (
@@ -40,8 +80,9 @@ function App() {
     );
   }
 
+  // --- UI ---
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans transition-colors">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans transition-colors">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-primary text-white p-2 z-50">
         Ana içeriğe atla
       </a>
@@ -113,27 +154,108 @@ function App() {
           </div>
         </section>
 
-        <section id="projeler" className="py-16 px-4 bg-gray-50 dark:bg-gray-900 border-y border-gray-200 dark:border-gray-800">
+        <section id="projeler" className="py-16 px-4 md:p-8 bg-gray-50 dark:bg-gray-950">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-10">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
               Projelerim
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card variant="elevated" title="Japonca Dil uygulaması" image="https://via.placeholder.com/400x200" imageAlt="Japonca dil uygulaması">
-                <p className="mb-4">Japonca öğrenme uygulaması, kullanıcıların dil becerilerini geliştirmesine yardımcı olur.</p>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  <span className="text-xs font-semibold bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Next.js</span>
-                  <span className="text-xs font-semibold bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Node.js</span>
-                </div>
-              </Card>
-              <Card variant="elevated" title="Kart Oyunu" image="https://via.placeholder.com/400x200" imageAlt="Kart oyunu">
-                <p className="mb-4">Kartlarla oynanan, stratejik ve eğlenceli bir oyun.</p>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  <span className="text-xs font-semibold bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">TypeScript</span>
-                  <span className="text-xs font-semibold bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Next.js</span>
-                </div>
-              </Card>
+
+            {/* HATA DURUMU */}
+            {error && (
+              <Alert variant="error" title="Hata" className="mb-6">
+                {error}
+              </Alert>
+            )}
+
+            {/* FİLTRELER */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <div className="flex-1">
+                <Input
+                  id="search"
+                  placeholder="Proje ara..."
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                />
+              </div>
+
+              <div className="flex gap-2 flex-wrap items-center">
+                {categories.map(cat => (
+                  <Button
+                    key={cat}
+                    variant={category === cat ? "primary" : "ghost"}
+                    size="sm"
+                    onClick={() => setCategory(cat)}
+                  >
+                    {cat === "all" ? "Tümü" : (cat.charAt(0).toUpperCase() + cat.slice(1))}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="flex gap-2 items-center">
+                <select
+                  value={sortField}
+                  onChange={e => setSortField(e.target.value as SortField)}
+                  className="border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option value="year">Yıl</option>
+                  <option value="title">Başlık</option>
+                </select>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSortOrder(o => o === "asc" ? "desc" : "asc")}
+                >
+                  {sortOrder === "asc" ? "A-Z / Eskiden Yeniye" : "Z-A / Yeniden Eskiye"}
+                </Button>
+              </div>
             </div>
+
+            {/* YÜKLENİYOR */}
+            {loading && (
+              <p className="text-center text-gray-500">
+                Projeler yükleniyor...
+              </p>
+            )}
+
+            {/* PROJE LİSTESİ */}
+            {!loading && filtered.length === 0 && !error && (
+              <p className="text-center text-gray-500">
+                Eşleşen proje bulunamadı.
+              </p>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filtered.map(project => (
+                <Card
+                  key={project.id}
+                  variant="elevated"
+                  title={project.title}
+                  image={project.image}
+                  imageAlt={`${project.title} ekran görüntüsü`}
+                >
+                  <p className="text-sm mb-3">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-1">
+                    {project.tech.map(t => (
+                      <span key={t} className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-0.5 rounded-full">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-400 mt-3 font-semibold">
+                    {project.year} &middot; {project.category.toUpperCase()}
+                  </p>
+                </Card>
+              ))}
+            </div>
+
+            {/* SONUÇ SAYISI */}
+            {!loading && !error && (
+              <p className="text-sm text-gray-500 mt-6 text-center">
+                {filtered.length} / {projects.length} proje gösteriliyor
+              </p>
+            )}
           </div>
         </section>
 
@@ -190,5 +312,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
